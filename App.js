@@ -14,11 +14,20 @@ export default class App extends Component {
     this.state={
       textValue:'',
       count: 0,
+      name: '',
+      password: '',
+      login: ''
     }
   }
 
   changeTextInput = text =>{
     this.setState({textValue: text});
+  };
+  changeNameInput = text =>{
+    this.setState({name: text});
+  };
+  changePassInput = text =>{
+    this.setState({password: text});
   };
 
   onPress = () => {
@@ -27,27 +36,38 @@ export default class App extends Component {
     });
   };
 
+  onLogin = () =>{
+    this.setState({
+      login: 'Usuario: '+this.state.name +' Contraseña: '+this.state.password,
+    });
+  };
+
   render(){
     return (
       <View style={styles.container}>
         <View style={styles.text}>
-          <Text> Hola Amigos</Text>
+          <Image source={require('./img/logo-de-facebook.png')}/>
         </View>
-
-        <Image source={require('./img/logo.png')}/>
-
+        <Text>Usuario:</Text>
         <TextInput
           style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-          onChangeText={text => this.changeTextInput(text)}
-          value={this.state.textValue}
+          onChangeText={text => this.changeNameInput(text)}
+          value={this.state.name}
+        />
+        <Text>Contraseña:</Text>
+        <TextInput
+          style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+          onChangeText={text => this.changePassInput(text)}
+          value={this.state.password}
+          secureTextEntry={true}
         />
 
-        <TouchableOpacity style={styles.button} onPress={this.onPress}>
-          <Text> Presiona Aqui </Text>
+        <TouchableOpacity style={styles.button} onPress={this.onLogin}>
+          <Text> Iniciar Sesion </Text>
         </TouchableOpacity>
         <View style={[styles.countContainer]}>
           <Text style={[styles.countText]}>
-            {this.state.count}
+            {this.state.login}
           </Text>
         </View>
       </View>
