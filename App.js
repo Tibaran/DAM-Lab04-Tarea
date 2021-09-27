@@ -1,77 +1,84 @@
 import React, {Component} from "react";
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { NavigationContainer } from '@react-navigation/native';
+import gamesList from "./app/components/gamesList/gamesList";
+import gameDetail from "./app/components/gameDetail/gameDetail";
 import { 
-  StyleSheet, 
-  TouchableOpacity, 
   Text, 
   View,
-  TextInput, 
-  Image
+  TextInput,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  Alert
 } from "react-native";
+const usuario = {
+  name: 'admin',
+  password: 'admin'
+}
+function login({ navigation, name, password}) {
+  const changeNameInput=(text)=>{
+    name = text;
+  }
+  const changePassInput=(text)=>{
+    password = text;
+  }
+  const showAlert = () =>{
+    Alert.alert('Error', 'La contraseña o usuarios son incorrectos');
+  }
+  const onLogin = () =>{
+    if (name == usuario.name && password == usuario.password){
+      navigation.navigate('Lista');
+    }else{
+      showAlert();
+    }
+  }
+  return (
+    <View style={styles.container}>
+    <View style={styles.text}>
+        <Image source={require('./app/img/mando.png')} style={styles.rexImages}/>
+    </View>
+    <Text>Usuario:</Text>
+    <TextInput
+        style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+        onChangeText={text => changeNameInput(text)}
+        value={name}
+    />
+    <Text>Contraseña:</Text>
+    <TextInput
+        style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+        onChangeText={text => changePassInput(text)}
+        value={password}
+        secureTextEntry={true}
+    />
 
+    <TouchableOpacity style={styles.button} onPress={onLogin}>
+        <Text> Iniciar Sesion </Text>
+    </TouchableOpacity>
+    <Text>Usuario: admin</Text>
+    <Text>Contraseña: admin</Text>
+    </View>
+  );
+}
+const Stack = createNativeStackNavigator();
 export default class App extends Component {
   constructor(props){
     super(props);
     this.state={
-      textValue:'',
-      count: 0,
-      name: '',
+      name:'',
       password: '',
-      login: ''
     }
   }
 
-  changeTextInput = text =>{
-    this.setState({textValue: text});
-  };
-  changeNameInput = text =>{
-    this.setState({name: text});
-  };
-  changePassInput = text =>{
-    this.setState({password: text});
-  };
-
-  onPress = () => {
-    this.setState({
-      count: this.state.count + 1,
-    });
-  };
-
-  onLogin = () =>{
-    this.setState({
-      login: 'Usuario: '+this.state.name +' Contraseña: '+this.state.password,
-    });
-  };
-
   render(){
     return (
-      <View style={styles.container}>
-        <View style={styles.text}>
-          <Image source={require('./img/logo-de-facebook.png')}/>
-        </View>
-        <Text>Usuario:</Text>
-        <TextInput
-          style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-          onChangeText={text => this.changeNameInput(text)}
-          value={this.state.name}
-        />
-        <Text>Contraseña:</Text>
-        <TextInput
-          style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-          onChangeText={text => this.changePassInput(text)}
-          value={this.state.password}
-          secureTextEntry={true}
-        />
-
-        <TouchableOpacity style={styles.button} onPress={this.onLogin}>
-          <Text> Iniciar Sesion </Text>
-        </TouchableOpacity>
-        <View style={[styles.countContainer]}>
-          <Text style={[styles.countText]}>
-            {this.state.login}
-          </Text>
-        </View>
-      </View>
-    );
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="login">
+        <Stack.Screen name="Login" component={login} />
+        <Stack.Screen name="Lista" component={gamesList} options={{ title: 'Videojuegos' }}/>
+        <Stack.Screen name="Detalles" component={gameDetail} />
+      </Stack.Navigator>
+    </NavigationContainer>);
   }
 }
 const styles = StyleSheet.create({
@@ -89,12 +96,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#DDDDDD',
     padding: 10,
+    marginBottom: 20,
   },
-  countContainer: {
-    alignItems: 'center',
-    padding: 10,
-  },
-  countText: {
-    color: '#FF00FF',
-  },
+  rexImages: {
+    width: 250,
+    height: 250,
+  }
 });
