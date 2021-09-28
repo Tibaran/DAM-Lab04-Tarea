@@ -12,54 +12,7 @@ import {
   StyleSheet,
   Alert
 } from "react-native";
-const usuario = {
-  name: 'admin',
-  password: 'admin'
-}
-function login({ navigation, name, password}) {
-  const changeNameInput=(text)=>{
-    name = text;
-  }
-  const changePassInput=(text)=>{
-    password = text;
-  }
-  const showAlert = () =>{
-    Alert.alert('Error', 'La contraseña o usuarios son incorrectos');
-  }
-  const onLogin = () =>{
-    if (name == usuario.name && password == usuario.password){
-      navigation.navigate('Lista');
-    }else{
-      showAlert();
-    }
-  }
-  return (
-    <View style={styles.container}>
-    <View style={styles.text}>
-        <Image source={require('./app/img/mando.png')} style={styles.rexImages}/>
-    </View>
-    <Text>Usuario:</Text>
-    <TextInput
-        style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-        onChangeText={text => changeNameInput(text)}
-        value={name}
-    />
-    <Text>Contraseña:</Text>
-    <TextInput
-        style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-        onChangeText={text => changePassInput(text)}
-        value={password}
-        secureTextEntry={true}
-    />
 
-    <TouchableOpacity style={styles.button} onPress={onLogin}>
-        <Text> Iniciar Sesion </Text>
-    </TouchableOpacity>
-    <Text>Usuario: admin</Text>
-    <Text>Contraseña: admin</Text>
-    </View>
-  );
-}
 const Stack = createNativeStackNavigator();
 export default class App extends Component {
   constructor(props){
@@ -73,8 +26,7 @@ export default class App extends Component {
   render(){
     return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="login">
-        <Stack.Screen name="Login" component={login} />
+      <Stack.Navigator initialRouteName="Lista">
         <Stack.Screen name="Lista" component={gamesList} options={{ title: 'Videojuegos' }}/>
         <Stack.Screen name="Detalles" component={gameDetail} />
       </Stack.Navigator>
